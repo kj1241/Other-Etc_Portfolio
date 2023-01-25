@@ -9,6 +9,3 @@
 Date: 2018.04  
 Gmae AI midterm assignment  
 
-result:  
-create_db.sql  
-bookstore.sql  
