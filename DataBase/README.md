@@ -3,5 +3,6 @@
 Date: 2016.11.23
 Goal: Complete given database sql on time
 
-bookstore.sql  
+result:
+create_db.sql  
 bookstore.sql  
