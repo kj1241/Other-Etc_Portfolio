@@ -1,4 +1,4 @@
-# DataBase subject final exam
+# Gmae AI PDDL assignment 
 
 
  <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F1icFF%2FbtrW9kIg2dO%2Ff4zNHGXQdohgoMyU8vkTk0%2Fimg.png"> 
