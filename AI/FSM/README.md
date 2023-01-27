@@ -1,4 +1,4 @@
-# DataBase subject final exam
+# Game AI midterm exam
 
 
  <img src="https://github.com/kj1241/Other-Etc/blob/main/AI/FSM/(UML)Ai_procet1.jpg?raw=true"> 
