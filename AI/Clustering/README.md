@@ -1,11 +1,11 @@
 # DataBase subject final exam
 
 
- <img src="https://github.com/kj1241/Other-Etc/blob/main/AI/FSM/(UML)Ai_procet1.jpg?raw=true"> 
+ <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FchWstI%2FbtrXmRLytjP%2F3jelF9aJd1Xw7dNnejKwwk%2Fimg.png"> 
   
- <mark style="background-color:orange">**자세한 사항(티스토리): https://kyeoungju.tistory.com/27**  </mark> 
+ <mark style="background-color:orange">**자세한 사항(티스토리): https://kyeoungju.tistory.com/29**  </mark> 
 
 
-Date: 2018.04  
-Gmae AI midterm assignment  
+Date: 2018.06  
+Gmae AI final assignment  
 
