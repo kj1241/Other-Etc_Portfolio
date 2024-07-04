@@ -244,6 +244,110 @@
 //    return 0;
 //}
 
+//#include <Ogre.h>
+//#include <OgreApplicationContext.h>
+//#include <OgreInput.h>
+//#include <OgreTrays.h>
+//#include <OgreOverlaySystem.h>
+//#include <OgreOverlayManager.h>
+//#include <OgreOverlayContainer.h>
+//#include <iostream>
+//
+//class Practice15 : public OgreBites::ApplicationContext, public OgreBites::InputListener
+//{
+//public:
+//    Practice15() : OgreBites::ApplicationContext("Practice15"), mTrayMgr(nullptr) {}
+//
+//    void setup() override
+//    {
+//        // 기본 설정 호출
+//        OgreBites::ApplicationContext::setup();
+//
+//        // 이미 생성된 루트 포인터 가져오기
+//        Ogre::Root* root = getRoot();
+//        Ogre::RenderWindow* window = getRenderWindow();
+//
+//        // 리소스 설정 파일 로드
+//        if (!Ogre::ResourceGroupManager::getSingleton().resourceGroupExists("General"))
+//        {
+//            Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../../Media", "FileSystem", "General");
+//            Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+//        }
+//
+//        // SceneManager 생성
+//        Ogre::SceneManager* sceneMgr = root->createSceneManager();
+//
+//        // OverlaySystem 생성 (이미 생성된 경우 무시)
+//        if (!Ogre::OverlaySystem::getSingletonPtr())
+//            mOverlaySystem = new Ogre::OverlaySystem();
+//        else
+//            mOverlaySystem = Ogre::OverlaySystem::getSingletonPtr();
+//
+//        // SceneManager에 OverlaySystem 추가
+//        sceneMgr->addRenderQueueListener(mOverlaySystem);
+//
+//        // RTSS와 장면 등록
+//        Ogre::RTShader::ShaderGenerator* shadergen = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
+//        shadergen->addSceneManager(sceneMgr);
+//
+//        // 카메라 생성
+//        Ogre::Camera* cam = sceneMgr->createCamera("myCam");
+//        cam->setAutoAspectRatio(true);
+//        cam->setNearClipDistance(5);
+//
+//        // 뷰포트 생성
+//        Ogre::Viewport* vp = window->addViewport(cam);
+//        vp->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
+//
+//        // Overlay 생성
+//        createOverlay();
+//
+//        // 기본 TrayManager 생성
+//        mTrayMgr = new OgreBites::TrayManager("InterfaceName", window);
+//        addInputListener(mTrayMgr);
+//
+//        // 버튼 생성
+//        OgreBites::Button* button = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "MyButton", "Click Me!");
+//        mTrayMgr->showAll();
+//    }
+//
+//    void createOverlay()
+//    {
+//        Ogre::OverlayManager& overlayManager = Ogre::OverlayManager::getSingleton();
+//
+//        // 이미 정의된 OverlayElement 가져오기
+//        Ogre::OverlayElement* panel = overlayManager.getOverlayElement("SdkTrays/Tray");
+//
+//        // 패널 설정
+//        panel->setMetricsMode(Ogre::GMM_PIXELS);
+//        panel->setPosition(10, 10);
+//        panel->setDimensions(300, 120);
+//
+//        // Overlay 생성 및 추가
+//        Ogre::Overlay* overlay = overlayManager.create("myOverlay");
+//        overlay->add2D(static_cast<Ogre::OverlayContainer*>(panel));
+//        overlay->show();
+//    }
+//
+//private:
+//    Ogre::OverlaySystem* mOverlaySystem;
+//    OgreBites::TrayManager* mTrayMgr;
+//};
+//
+//int main(int argc, char** argv)
+//{
+//    try {
+//        Practice15 app;
+//        app.initApp();
+//        app.getRoot()->startRendering();
+//        app.closeApp();
+//    }
+//    catch (Ogre::Exception& e) {
+//        std::cerr << "An exception has occurred: " << e.getFullDescription().c_str() << std::endl;
+//    }
+//    return 0;
+//}
+
 #include <Ogre.h>
 #include <OgreApplicationContext.h>
 #include <OgreInput.h>
@@ -253,10 +357,10 @@
 #include <OgreOverlayContainer.h>
 #include <iostream>
 
-class Practice15 : public OgreBites::ApplicationContext, public OgreBites::InputListener
+class Practice15 : public OgreBites::ApplicationContext, public OgreBites::InputListener, public OgreBites::TrayListener
 {
 public:
-    Practice15() : OgreBites::ApplicationContext("Practice15"), mTrayMgr(nullptr) {}
+    Practice15() : OgreBites::ApplicationContext("Practice15"), mTrayMgr(nullptr), mHpBar(nullptr), mScoreLabel(nullptr), mScore(0) {}
 
     void setup() override
     {
@@ -267,12 +371,12 @@ public:
         Ogre::Root* root = getRoot();
         Ogre::RenderWindow* window = getRenderWindow();
 
-        // 리소스 설정 파일 로드
-        if (!Ogre::ResourceGroupManager::getSingleton().resourceGroupExists("General"))
-        {
-            Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../../Media", "FileSystem", "General");
-            Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-        }
+        //// 리소스 설정 파일 로드
+        //if (!Ogre::ResourceGroupManager::getSingleton().resourceGroupExists("General"))
+        //{
+        //    Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../../Media", "FileSystem", "General");
+        //    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+        //}
 
         // SceneManager 생성
         Ogre::SceneManager* sceneMgr = root->createSceneManager();
@@ -303,11 +407,16 @@ public:
         createOverlay();
 
         // 기본 TrayManager 생성
-        mTrayMgr = new OgreBites::TrayManager("InterfaceName", window);
+        mTrayMgr = new OgreBites::TrayManager("InterfaceName", window, this);
         addInputListener(mTrayMgr);
 
-        // 버튼 생성
-        OgreBites::Button* button = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "MyButton", "Click Me!");
+        // HP 바 슬라이더 생성
+        mHpBar = mTrayMgr->createThickSlider(OgreBites::TL_TOPLEFT, "HPBar", "HP", 300, 100, 0, 100, 100);
+        mHpBar->setValue(100); // 초기 HP를 100으로 설정
+
+        // 스코어 라벨 생성
+        mScoreLabel = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT, "ScoreLabel", "Score: 0", 200);
+
         mTrayMgr->showAll();
     }
 
@@ -329,9 +438,31 @@ public:
         overlay->show();
     }
 
+    void sliderMoved(OgreBites::Slider* slider) override
+    {
+        if (slider->getName() == "HPBar")
+        {
+            int hp = slider->getValue();
+            std::cout << "HP: " << hp << std::endl;
+        }
+    }
+
+    void buttonHit(OgreBites::Button* button) override
+    {
+        if (button->getName() == "MyButton")
+        {
+            mScore += 10;
+            mScoreLabel->setCaption("Score: " + std::to_string(mScore));
+            std::cout << "Score: " << mScore << std::endl;
+        }
+    }
+
 private:
     Ogre::OverlaySystem* mOverlaySystem;
     OgreBites::TrayManager* mTrayMgr;
+    OgreBites::Slider* mHpBar;
+    OgreBites::Label* mScoreLabel;
+    int mScore;
 };
 
 int main(int argc, char** argv)
@@ -347,3 +478,4 @@ int main(int argc, char** argv)
     }
     return 0;
 }
+
